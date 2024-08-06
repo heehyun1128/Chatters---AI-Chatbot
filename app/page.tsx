@@ -46,35 +46,14 @@ const Home = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="w-full h-screen flex flex-col justify-between gap-3 p-4 overflow-hidden"
+      className="w-full min-h-screen flex flex-col justify-between gap-3 p-4 overflow-hidden relative"
     >
-      <motion.div
-        className="absolute top-0 left-0 w-64 h-64 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob"
-        animate={{
-          scale: [1, 1.1, 1],
-          rotate: [0, 10, 0],
-          transition: { duration: 5, repeat: Infinity },
-        }}
-      />
-      <motion.div
-        className="absolute top-0 right-0 w-64 h-64 bg-yellow-200 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-2000"
-        animate={{
-          scale: [1, 1.1, 1],
-          rotate: [0, -10, 0],
-          transition: { duration: 5, repeat: Infinity },
-        }}
-      />
-      <motion.div
-        className="absolute bottom-0 left-1/2 w-64 h-64 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-4000"
-        animate={{
-          scale: [1, 1.1, 1],
-          rotate: [0, 10, 0],
-          transition: { duration: 5, repeat: Infinity },
-        }}
-      />
+      <div className="absolute top-0 left-0 w-1/4 h-1/4 md:w-64 md:h-64 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-50" />
+      <div className="absolute top-0 right-0 w-1/4 h-1/4 md:w-64 md:h-64 bg-yellow-200 rounded-full mix-blend-multiply filter blur-xl opacity-50" />
+      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/4 h-1/4 md:w-64 md:h-64 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-50" />
 
       <motion.div
-        className="relative z-10 flex-1 overflow-y-auto mb-4 p-6 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-2xl shadow-lg"
+        className="relative z-10 flex-1 overflow-y-auto mb-4 p-4 md:p-6 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-2xl shadow-lg"
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -105,9 +84,7 @@ const Home = () => {
                   chat.role === "user"
                     ? "bg-purple-500 text-white"
                     : "bg-white shadow-purple-300"
-                } shadow-md`}
-                whileHover={{ scale: 1.03 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                } shadow-md max-w-[80%] break-words`}
               >
                 <strong>{chat.role === "user" ? "You: " : "Chatters: "}</strong>{" "}
                 {chat.content}
@@ -127,7 +104,7 @@ const Home = () => {
       </motion.div>
 
       <motion.div
-        className="flex gap-2"
+        className="flex flex-col sm:flex-row gap-2"
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -136,11 +113,11 @@ const Home = () => {
           placeholder="Type your message here..."
           value={userPrompt}
           onChange={(e) => setUserPrompt(e.target.value)}
-          className="flex-1 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-purple-400"
+          className="flex-1 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-full px-4 py-2 sm:px-6 sm:py-3 focus:outline-none focus:ring-2 focus:ring-purple-400"
         />
         <Button
           onClick={() => postQuestion(userPrompt)}
-          className="bg-purple-500 hover:bg-purple-600 text-white rounded-full px-6 py-3 transition-all duration-300 ease-in-out transform hover:scale-105"
+          className="bg-purple-500 hover:bg-purple-600 text-white rounded-full px-4 py-2 sm:px-6 sm:py-3 transition-all duration-300 ease-in-out transform hover:scale-105"
         >
           Send
         </Button>
