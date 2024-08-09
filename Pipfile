@@ -1,0 +1,3 @@
+[packages]
+boto3 = "*"
+python-dotenv = "*"
