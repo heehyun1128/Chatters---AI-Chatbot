@@ -1,3 +1,5 @@
 [packages]
 boto3 = "*"
 python-dotenv = "*"
+langchain-openai = "*"
+langchain-community = "*"
