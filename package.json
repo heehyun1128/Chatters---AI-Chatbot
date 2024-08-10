@@ -11,7 +11,9 @@
   "dependencies": {
     "@ai-sdk/openai": "^0.0.40",
     "@aws-sdk/client-bedrock": "^3.624.0",
+    "@aws-sdk/client-bedrock-runtime": "^3.624.0",
     "@aws-sdk/client-dynamodb": "^3.624.0",
+    "@aws-sdk/credential-providers": "^3.624.0",
     "@aws-sdk/types": "^3.609.0",
     "@radix-ui/react-slot": "^1.1.0",
     "ai": "^3.3.0",
@@ -25,6 +27,7 @@
     "openai": "^4.54.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-markdown": "^9.0.1",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7"
   },

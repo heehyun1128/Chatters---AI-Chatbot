@@ -2,16 +2,23 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import Loader from "@/components/loader";
 import { motion, AnimatePresence } from "framer-motion";
+import ReactMarkdown from 'react-markdown';
 
 const Home = () => {
   const [chats, setChats] = useState<any[]>([]);
   const [userPrompt, setUserPrompt] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
- 
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [chats]);
+
   const postQuestion = async (userPrompt: string) => {
     try {
       setChats((prevChats) => [
@@ -22,20 +29,18 @@ const Home = () => {
       setUserPrompt("");
       setLoading(true);
 
-      const response = await axios.post("/api/chat", userPrompt);
+      const response = await axios.post("/api/chat", { userPrompt });
+      
+      // Extract the response data
+      const responseData = response.data;
+      
+      // Update the state with the response
+      setChats((prevChats) => [
+        ...prevChats,
+        { role: 'assistant', content: responseData.generation }
+      ]);
 
-      if (Array.isArray(response.data)) {
-        setLoading(false);
-        setChats((prevChats) => [
-          ...prevChats,
-          ...response.data.map((message: any) => ({
-            role: "Chatters",
-            content: message.content,
-          })),
-        ]);
-      } else {
-        console.error("Unexpected response format:", response.data);
-      }
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching chats:", error);
     }
@@ -53,6 +58,7 @@ const Home = () => {
       <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/4 h-1/4 md:w-64 md:h-64 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-50" />
 
       <motion.div
+        ref={chatContainerRef}
         className="relative z-10 flex-1 overflow-y-auto mb-4 p-4 md:p-6 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-2xl shadow-lg"
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -84,10 +90,16 @@ const Home = () => {
                   chat.role === "user"
                     ? "bg-purple-500 text-white"
                     : "bg-white shadow-purple-300"
-                } shadow-md max-w-[80%] break-words`}
+                } shadow-md max-w-[90%] break-words`}
               >
                 <strong>{chat.role === "user" ? "You: " : "Chatters: "}</strong>{" "}
-                {chat.content}
+                {chat.role === "user" ? (
+                  chat.content
+                ) : (
+                  <ReactMarkdown className="prose prose-sm max-w-none overflow-hidden">
+                    {chat.content}
+                  </ReactMarkdown>
+                )}
               </motion.div>
             </motion.div>
           ))}

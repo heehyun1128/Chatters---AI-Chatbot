@@ -1,62 +1,39 @@
-import OpenAI from "openai";
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
+import { BedrockRuntimeClient, InvokeModelCommand } from "@aws-sdk/client-bedrock-runtime";
+import { fromNodeProviderChain } from "@aws-sdk/credential-providers";
 
-const openai = new OpenAI({
-  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+// Ensure you have the AWS region in your environment variables
+const REGION = process.env.AWS_REGION || 'us-west-2';
+
+const bedrockRuntime = new BedrockRuntimeClient({
+  region: REGION,
+  credentials: fromNodeProviderChain(),
 });
-
-const systemPrompt = `Account Setup:
-"Welcome! How can I assist you with setting up your new travel account?"
-"To get started with a new account, please follow these steps: [Provide detailed steps]."
-"Verify your new account by clicking the link sent to your email. Didn't receive it? Let me help you."
-Password Reset:
-"It looks like you need to reset your password. Let's get started by sending a reset link to your registered email."
-"To create a strong password, use a mix of letters, numbers, and special characters. Need help? I'm here."
-"Forgot your username or email? Let me guide you through the recovery process."
-Trip Planning:
-"Planning a trip? Let's start with choosing your destination. Where would you like to go?"
-"Customize your travel itinerary by selecting from our range of tours and activities. How can I help you today?"
-"Need help booking your flights and accommodations? I'm here to guide you through each step."
-`;
 
 export async function POST(req: Request) {
   try {
-    const  question  = await req.text();
+    const { userPrompt } = await req.json();
 
-    if (!openai.apiKey) {
-      console.error("OpenAI API key is missing");
-      return NextResponse.json({
-        error: "OpenAI API key is missing",
-        success: false,
-      });
-    }
+    const params = {
+      modelId: "meta.llama3-8b-instruct-v1:0",
+      contentType: "application/json",
+      accept: "application/json",
+      body: JSON.stringify({
+        prompt: userPrompt || "What country is San Francisco located?",
+        max_gen_len: 512,
+        temperature: 0.5,
+        top_p: 0.9
+      })
+    };
 
-    // Call OpenAI API
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "system",
-          content: systemPrompt,
-        },
-        {
-          role: "user",
-          content: question,
-        },
-      ],
-    });
+    const command = new InvokeModelCommand(params);
+    const response = await bedrockRuntime.send(command);
 
-    const assistantMessage = response.choices[0]?.message?.content || "No response from AI";
+    const responseBody = JSON.parse(new TextDecoder().decode(response.body));
 
-    const messages = [
-    
-      { role: "Chatters", content: assistantMessage },
-    ];
-
-    return NextResponse.json(messages, { status: 200 });
-  } catch (err) {
-    console.error("Error processing request:", err);
-
-    return NextResponse.json({ error: `System Error: ${err}`, success: false });
+    return NextResponse.json(responseBody);
+  } catch (error) {
+    console.error('Error:', error);
+    return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
   }
 }
