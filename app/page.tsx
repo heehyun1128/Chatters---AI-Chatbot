@@ -29,15 +29,16 @@ const Home = () => {
       setUserPrompt("");
       setLoading(true);
 
-      const response = await axios.post("/api/chat", { userPrompt });
-      
+      const response = await axios.post("http://127.0.0.1:5000/query", {userPrompt} );
+      // const response = await axios.post("/api/chat", { userPrompt });
+      console.log(response)
       // Extract the response data
       const responseData = response.data;
       
       // Update the state with the response
       setChats((prevChats) => [
         ...prevChats,
-        { role: 'assistant', content: responseData.generation }
+        { role: 'assistant', content: responseData.response }
       ]);
 
       setLoading(false);

@@ -1,28 +1,57 @@
-import boto3
-import json
-from dotenv import load_dotenv
+import asyncio
+from flask import Flask, request, jsonify, redirect
+from pinecone_index import create_index
+from pinecone_embed_document import chunk_and_embed_document
+from langchain.chains import RetrievalQA  
+from langchain_openai import ChatOpenAI
+from langchain_openai import OpenAIEmbeddings
+from langchain_pinecone import PineconeVectorStore
 import os
-load_dotenv()
+from flask_cors import CORS
+from flask_wtf.csrf import CSRFProtect, generate_csrf
 
-bedrock_runtime=boto3.client('bedrock-runtime', region_name='us-west-2')
+app = Flask(__name__)
+CORS(app)
 
-prompt="What is the date today?"
 
-# kwargs={
-#  "modelId": "meta.llama3-1-405b-instruct-v1:0",
-#  "contentType": "application/json",
-#  "accept": "application/json",
-#  "body": json.dumps({"prompt":"this is where you place your input text","max_gen_len":512,"temperature":0.5,"top_p":0.9})
-# }
-kwargs={
- "modelId": "meta.llama3-8b-instruct-v1:0",
- "contentType": "application/json",
- "accept": "application/json",
- "body": json.dumps({"prompt":"What country is San Francisco located?","max_gen_len":512,"temperature":0.5,"top_p":0.9})
-}
 
-res=bedrock_runtime.invoke_model(**kwargs)
 
-body=json.loads(res['body'].read())
+@app.route('/query', methods=['POST'])
+def query():
+  
+    data = request.json
+    user_prompt = data.get('userPrompt', '')
 
-print(body)
+    # Initialize a LangChain object for chatting with the LLM
+    llm = ChatOpenAI(
+        openai_api_key=os.environ.get("OPENAI_API_KEY"),
+        model_name="gpt-3.5-turbo",
+        temperature=0.0
+    )
+
+# Initialize a LangChain object for retrieving information from Pinecone
+    knowledge = PineconeVectorStore.from_existing_index(
+        index_name="chatters",
+        namespace="ns1",
+        embedding=OpenAIEmbeddings(openai_api_key=os.environ["OPENAI_API_KEY"])
+    )
+
+# Initialize a LangChain object for chatting with the LLM with knowledge from Pinecone
+    qa = RetrievalQA.from_chain_type(
+        llm=llm,
+        chain_type="stuff",
+        retriever=knowledge.as_retriever()
+    )
+    print(qa)
+    res=qa.invoke(user_prompt).get("result")
+    print(res)
+    # print("Received a request")
+    # data = request.json
+    # question = data.get('question', '')
+    # print(question)
+   
+    # result = asyncio.run(qa.invoke(question).get("result"))
+    return jsonify({'response': res})
+
+if __name__ == '__main__':
+    app.run(debug=True)
