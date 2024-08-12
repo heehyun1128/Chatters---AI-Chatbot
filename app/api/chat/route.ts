@@ -2,27 +2,32 @@ import { NextResponse } from 'next/server';
 import { BedrockRuntimeClient, InvokeModelCommand } from "@aws-sdk/client-bedrock-runtime";
 import { fromNodeProviderChain } from "@aws-sdk/credential-providers";
 
-// Ensure you have the AWS region in your environment variables
 const REGION = process.env.AWS_REGION || 'us-west-2';
 
 const bedrockRuntime = new BedrockRuntimeClient({
   region: REGION,
   credentials: fromNodeProviderChain(),
-});
+}); 
+
+process.env.AWS_PROFILE = "Nateuser";
 
 export async function POST(req: Request) {
   try {
-    const { userPrompt } = await req.json();
+    const { message, language = 'English' } = await req.json();
+
+    const systemPrompt = `You are a helpful assistant. Please respond in ${language}.`;
+    const userMessage = { role: "user", content: message };
 
     const params = {
-      modelId: "meta.llama3-8b-instruct-v1:0",
+      modelId: "anthropic.claude-3-sonnet-20240229-v1:0",
       contentType: "application/json",
       accept: "application/json",
       body: JSON.stringify({
-        prompt: userPrompt || "What country is San Francisco located?",
-        max_gen_len: 512,
-        temperature: 0.5,
-        top_p: 0.9
+        anthropic_version: "bedrock-2023-05-31",
+        max_tokens: 1000,
+        messages: [userMessage],
+        system: systemPrompt,
+        temperature: 0.7,
       })
     };
 
@@ -31,7 +36,10 @@ export async function POST(req: Request) {
 
     const responseBody = JSON.parse(new TextDecoder().decode(response.body));
 
-    return NextResponse.json(responseBody);
+    return NextResponse.json({ 
+      message: responseBody.content[0].text,
+      language: language
+    });
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
