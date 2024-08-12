@@ -2,54 +2,36 @@ import "./styles.css";
 import { motion } from "framer-motion";
 
 export default function Loader() {
+  const dotVariants = {
+    animate: (index: number) => ({
+      y: [0, -10, 0],
+      transition: {
+        duration: 0.6,
+        ease: "easeInOut",
+        repeat: Infinity,
+        repeatDelay: 0.1,
+        delay: index * 0.2 // Stagger the animation for each dot
+      }
+    })
+  };
+
   return (
-    <div className="flex align-middle" style={{width:"400px", height:"80px"}}>
-        <strong>Chatters:</strong>
+    <div className="flex items-center justify-center space-x-2" style={{width:"400px", height:"80px"}}>
+      <strong className="text-lg mr-2">Chatters is typing</strong>
+      {[...Array(3)].map((_, index) => (
         <motion.div
-      className="box"
-      animate={{
-        scale: [1, 2, 2, 1, 1],
-        rotate: [0, 0, 180, 180, 0],
-        borderRadius: ["0%", "0%", "50%", "50%", "0%"]
-      }}
-      transition={{
-        duration: 2,
-        ease: "easeInOut",
-        times: [0, 0.2, 0.5, 0.8, 1],
-        repeat: Infinity,
-        repeatDelay: 1
-      }}
-    />
-    <motion.div
-      className="box"
-      animate={{
-        scale: [1, 2, 2, 1, 1],
-        rotate: [0, 0, 180, 180, 0],
-        borderRadius: ["0%", "0%", "50%", "50%", "0%"]
-      }}
-      transition={{
-        duration: 2,
-        ease: "easeInOut",
-        times: [0, 0.2, 0.5, 0.8, 1],
-        repeat: Infinity,
-        repeatDelay: 1
-      }}
-    />
-    <motion.div
-      className="box"
-      animate={{
-        scale: [1, 2, 2, 1, 1],
-        rotate: [0, 0, 180, 180, 0],
-        borderRadius: ["0%", "0%", "50%", "50%", "0%"]
-      }}
-      transition={{
-        duration: 2,
-        ease: "easeInOut",
-        times: [0, 0.2, 0.5, 0.8, 1],
-        repeat: Infinity,
-        repeatDelay: 1
-      }}
-    />
+          key={index}
+          className="rounded-full"
+          variants={dotVariants}
+          animate="animate"
+          style={{
+            backgroundColor: "#718096",
+            width: "8px",
+            height: "8px"
+          }}
+          custom={index}
+        />
+      ))}
     </div>
   );
 }

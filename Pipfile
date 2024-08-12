@@ -1,0 +1,13 @@
+[packages]
+boto3 = "*"
+python-dotenv = "*"
+langchain-openai = "*"
+langchain-community = "*"
+langchain-pinecone = "*"
+pinecone-client = {extras = ["grpc"], version = "*"}
+langchain = "*"
+langchain-text-splitters = "*"
+aiohttp = "*"
+flask = "*"
+flask-cors = "*"
+flask-wtf = "*"
