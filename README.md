@@ -7,7 +7,7 @@ AI-Powered Chatbot with AWS Bedrock API, RAG, and Pinecone Integration
 ![Screenshot 2024-08-11 at 10 29 08 PM](https://github.com/user-attachments/assets/6f8458d9-6a74-4d86-9e76-4ff942d4f9f9)
 
 
-## Chatbot responding to the user with LLMs through AWS Bedrock
+## Chatbot responding to the user with LLMs through AWS Bedrock API/Claude 3 and Pinecone/RAG
 
 ![Screenshot 2024-08-11 at 10 34 28 PM](https://github.com/user-attachments/assets/3ea06619-c0c6-4c17-9eed-7d9d9eb8a4cc)
 
