@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import axios from "axios";
 
 const ChatComponent: React.FC = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('en');
@@ -29,11 +30,16 @@ const ChatComponent: React.FC = () => {
     // Create a new AbortController for this request
     abortControllerRef.current = new AbortController();
 
+    const res=await axios.post("http://127.0.0.1:5000/query", {userPrompt:input} );
+    const ragInput=res.data.response
+    console.log(ragInput)
+    console.log(input)
+
     try {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: input, language: selectedLanguage }),
+        body: JSON.stringify({ message: ragInput, language: selectedLanguage }),
         signal: abortControllerRef.current.signal,
       });
 
