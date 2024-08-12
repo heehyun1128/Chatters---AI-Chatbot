@@ -1,3 +1,43 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --primary-green: #51DA4C;
+    --dark-background: #202020;
+}
+
+body {
+    background-color: var(--dark-background);
+    color: var(--primary-green);
+}
+
+::selection {
+    background-color: var(--primary-green);
+    color: var(--dark-background);
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark-background);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-green);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #45c040;
+}
+
+/* For Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-green) var(--dark-background);
+}

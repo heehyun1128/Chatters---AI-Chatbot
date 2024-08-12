@@ -9,7 +9,7 @@ const bedrockRuntime = new BedrockRuntimeClient({
   credentials: fromNodeProviderChain(),
 }); 
 
-process.env.AWS_PROFILE = "Nateuser";
+process.env.AWS_PROFILE
 
 export async function POST(req: Request) {
   try {
