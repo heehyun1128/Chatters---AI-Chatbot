@@ -88,30 +88,30 @@ const ChatComponent: React.FC = () => {
           >
             {/* Custom AI Assistant logo */}
             <div className="w-12 h-12 mx-auto mb-10 flex items-center justify-center">
-              <Link href="/">
                 <motion.svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 448 512"
-                  className="w-full h-full fill-[#51DA4C] cursor-pointer"
-                  initial={{ scale: 0.8, rotate: 0 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  whileHover={{
-                    scale: 1.1,
-                    rotate: 5,
-                    filter: "drop-shadow(0 0 15px #51DA4C)"
-                  }}
-                  whileTap={{ scale: 0.95 }}
+                  className="w-full h-full fill-[#51DA4C]"
+                  initial={{ filter: "drop-shadow(0 0 0px #51DA4C)" }}
+                  animate={{ filter: "drop-shadow(0 0 10px #51DA4C)" }}
                   transition={{
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 10
+                    duration: 1.5,
+                    repeat: Infinity,
+                    repeatType: "reverse"
                   }}
                 >
-                  <motion.path
-                    d="M349.4 44.6c5.9-13.7 1.5-29.7-10.6-38.5s-28.6-8-39.9 1.8l-256 224c-10 8.8-13.6 22.9-8.9 35.3S50.7 288 64 288l111.5 0L98.6 467.4c-5.9 13.7-1.5 29.7 10.6 38.5s28.6 8 39.9-1.8l256-224c10-8.8 13.6-22.9 8.9-35.3s-16.6-20.7-30-20.7l-111.5 0L349.4 44.6z"
-                  />
+                  <path d="M349.4 44.6c5.9-13.7 1.5-29.7-10.6-38.5s-28.6-8-39.9 1.8l-256 224c-10 8.8-13.6 22.9-8.9 35.3S50.7 288 64 288l111.5 0L98.6 467.4c-5.9 13.7-1.5 29.7 10.6 38.5s28.6 8 39.9-1.8l256-224c10-8.8 13.6-22.9 8.9-35.3s-16.6-20.7-30-20.7l-111.5 0L349.4 44.6z" />
                 </motion.svg>
-              </Link>
+              <motion.div
+                initial={{ filter: "drop-shadow(0 0 0px #51DA4C)" }}
+                animate={{ filter: "drop-shadow(0 0 15px #51DA4C)" }}
+                transition={{
+                  duration: 1,
+                  repeat: Infinity,
+                  repeatType: "reverse"
+                }}
+                className="absolute inset-0 pointer-events-none"
+              />
             </div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}

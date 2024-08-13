@@ -20,6 +20,7 @@ export default function RootLayout({
       appearance={{
         variables: { colorPrimary: "black", colorBackground: "" },
       }}
+      afterSignInUrl="/chat"
     >
       <html lang="en">
         <body className={inter.className}>{children}</body>

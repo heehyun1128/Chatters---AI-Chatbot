@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
 import { useRouter } from 'next/navigation';
+import { UserButton, useClerk } from "@clerk/nextjs";
+import  Link  from 'next/link';
 
 interface Chat {
   id: number;
@@ -19,31 +20,41 @@ const SideNav: React.FC = () => {
     setSavedChats(savedChats.filter(chat => chat.id !== id));
   };
 
- 
   const router = useRouter();
+  const { signOut } = useClerk();
 
   const handleSignOut = async () => {
-  
-    router.push("/"); // Ensure the landing page is reached
+    await signOut();
+    router.push('/');
   };
 
   return (
     <motion.div
       initial={{ opacity: 0, x: -50 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5 }}
-      className="fixed top-4 left-4 w-80 bg-[#202020]/90 backdrop-filter backdrop-blur-lg rounded-3xl shadow-2xl overflow-y-auto max-h-[calc(100vh-2rem)]"
+      transition={{ duration: 0.3 }}
+      className="fixed top-0 left-0 w-80 h-full bg-[#202020]/90 backdrop-filter backdrop-blur-lg shadow-2xl overflow-y-auto"
     >
-      <div className="p-6">
-        <motion.h2
+      <div className="p-6 flex flex-col h-full">
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-          className="text-white text-3xl font-medium mb-6 tracking-tighter"
+          transition={{ duration: 0.3 }}
+          className="flex items-center justify-between mb-6"
         >
-          Conversations
-        </motion.h2>
-        <ul className="space-y-3 mb-6">
+          <h2 className="text-white text-3xl font-medium tracking-tighter">
+            Conversations
+          </h2>
+          <UserButton
+            appearance={{
+              elements: {
+                userButtonAvatarBox: "w-10 h-10"
+              }
+            }}
+            afterSignOutUrl="/"
+          />
+        </motion.div>
+        <ul className="space-y-3 mb-6 flex-grow">
           <AnimatePresence>
             {savedChats.map((chat) => (
               <motion.li
@@ -51,7 +62,7 @@ const SideNav: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
                 className="bg-[#2C2C2F] p-3 rounded-xl flex items-center justify-between cursor-pointer hover:bg-[#3C3C3F] transition-colors relative"
               >
                 <div className="flex items-center">
@@ -63,6 +74,7 @@ const SideNav: React.FC = () => {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
+                  transition={{ duration: 0.1 }}
                   className="text-white hover:text-[#51DA4C] transition-colors"
                   onClick={() => removeChat(chat.id)}
                 >
@@ -74,14 +86,6 @@ const SideNav: React.FC = () => {
             ))}
           </AnimatePresence>
         </ul>
-        <motion.button
-        onClick={handleSignOut}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="w-full bg-[#51DA4C] text-white rounded-xl px-4 py-2 hover:bg-[#51DA4C]/80 transition-colors text-sm font-medium tracking-tighter"
-        >
-          Sign Out
-        </motion.button>
       </div>
     </motion.div>
   );
