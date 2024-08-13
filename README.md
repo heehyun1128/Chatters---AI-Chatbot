@@ -1,36 +1,17 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+AI-Powered Chatbot with AWS Bedrock API, RAG, and Pinecone Integration
 
-## Getting Started
+## Landing Page
 
-First, run the development server:
+![Screenshot 2024-08-11 at 10 26 33 PM](https://github.com/user-attachments/assets/1027d28d-f623-470c-8710-df9b14afb168)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![Screenshot 2024-08-11 at 10 29 08 PM](https://github.com/user-attachments/assets/6f8458d9-6a74-4d86-9e76-4ff942d4f9f9)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Chatbot responding to the user with LLMs through AWS Bedrock API/Claude 3 and Pinecone/RAG
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+![Screenshot 2024-08-11 at 10 34 28 PM](https://github.com/user-attachments/assets/3ea06619-c0c6-4c17-9eed-7d9d9eb8a4cc)
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## Multi-language Support
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![Screenshot 2024-08-11 at 10 40 57 PM](https://github.com/user-attachments/assets/6fd7f10a-7c19-4afa-a061-9c2267423615)
