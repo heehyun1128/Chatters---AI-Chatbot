@@ -5,7 +5,6 @@ import os
 import asyncio
 from langchain.schema import Document
 from pinecone.grpc import PineconeGRPC as Pinecone
-
 import openai 
 
 load_dotenv()

@@ -15,7 +15,7 @@ export async function POST(req: Request) {
   try {
     const { message, language = 'English' } = await req.json();
 
-    const systemPrompt = `You are a helpful assistant. Please respond in ${language}.`;
+    const systemPrompt = `You are a helpful assistant. Please translate the text in ${language} and only return the translation and no other content.`;
     const userMessage = { role: "user", content: message };
 
     const params = {

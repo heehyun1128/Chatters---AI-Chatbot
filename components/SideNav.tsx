@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import { useRouter } from 'next/navigation';
+
 interface Chat {
   id: number;
   title: string;
@@ -15,6 +17,14 @@ const SideNav: React.FC = () => {
 
   const removeChat = (id: number) => {
     setSavedChats(savedChats.filter(chat => chat.id !== id));
+  };
+
+ 
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+  
+    router.push("/"); // Ensure the landing page is reached
   };
 
   return (
@@ -65,6 +75,7 @@ const SideNav: React.FC = () => {
           </AnimatePresence>
         </ul>
         <motion.button
+        onClick={handleSignOut}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="w-full bg-[#51DA4C] text-white rounded-xl px-4 py-2 hover:bg-[#51DA4C]/80 transition-colors text-sm font-medium tracking-tighter"

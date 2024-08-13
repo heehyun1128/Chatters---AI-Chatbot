@@ -3,15 +3,14 @@ from pinecone import ServerlessSpec
 import os
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 def create_index():
-    
     pc = Pinecone(api_key=os.environ.get("PINECONE_API_KEY"))
 
-
     index_name = "chatters"
-  
+
     if index_name not in pc.list_indexes().names():
         pc.create_index(
             name="chatters",

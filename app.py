@@ -23,36 +23,31 @@ def query():
   
     data = request.json
     user_prompt = data.get('userPrompt', '')
-    print( "user_prompt",user_prompt)
+    # print( "user_prompt",user_prompt)
     # Initialize a LangChain object for chatting with the LLM
     llm = ChatOpenAI(
         openai_api_key=os.environ.get("OPENAI_API_KEY"),
         model_name="gpt-3.5-turbo",
         temperature=0.0
     )
-    # print(llm)
-# Initialize a LangChain object for retrieving information from Pinecone
+   
+    # Initialize a LangChain object for retrieving information from Pinecone
     knowledge = PineconeVectorStore.from_existing_index(
         index_name="chatters",
         namespace="ns1",
         embedding=OpenAIEmbeddings(openai_api_key=os.environ["OPENAI_API_KEY"])
     )
-    # print(knowledge)
-# Initialize a LangChain object for chatting with the LLM with knowledge from Pinecone
+  
+    # Initialize a LangChain object for chatting with the LLM with knowledge from Pinecone
     qa = RetrievalQA.from_chain_type(
         llm=llm,
         chain_type="stuff",
         retriever=knowledge.as_retriever()
     )
-    # print(qa)
-    res=qa.invoke(user_prompt).get("result")
-    print("res",res)
-    # print("Received a request")
-    # data = request.json
-    # question = data.get('question', '')
-    # print(question)
    
-    # result = asyncio.run(qa.invoke(question).get("result"))
+    res=qa.invoke(user_prompt).get("result")
+    # print("res",res)
+  
     return jsonify({'response': res})
 
 if __name__ == '__main__':
